@@ -13,15 +13,15 @@ type OnProgress = (event: any) => void;
  * @returns output
  */
 export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgress?: OnProgress) => {
-    return new Promise((resolve, rej) => {
+    return new Promise((resolve, reject) => {
         dockerode.pull(imageName, (pullError: any, stream: Stream) => {
             if (pullError) {
-                rej(pullError);
+                reject(pullError);
             }
             dockerode.modem.followProgress(stream, (error: any, output: any) => {
                 // onFinished
                 if (error) {
-                    rej(error);
+                    reject(error);
                 }
                 resolve(output);
             }, onProgress);
@@ -35,7 +35,7 @@ export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgre
  * @param cmd - command to execute
  * @returns result
  */
-export const containerExec = (container: Dockerode.Container, cmd: string[]) => {
+export const containerExec = (container: Dockerode.Container, cmd: string[]): Promise<string[]> => {
     return new Promise((resolve, error) => {
         container.exec({ Cmd: cmd, AttachStdout: true, AttachStderr: true }, (cErr: any, exec: any) => {
             if (cErr) {
@@ -73,13 +73,13 @@ type WaitPredicate = (line: string) => boolean;
  * @param timeout - how much time (in ms) to wait until it'll throw a error
  */
 export const waitForOutput = (container: Dockerode.Container, predicate: WaitPredicate, timeout: number = 30000) => {
-    return new Promise<boolean>((resolve, error) => {
+    return new Promise<boolean>((resolve, reject) => {
         const currTimeout = setTimeout(() => {
-            error(`waiting for container excited timeout ${timeout} (default 10s)`);
+            reject(`waiting for container excited timeout ${timeout} (default 10s)`);
         }, timeout);
         container.attach({ stream: true, stdout: true, stderr: true }, (err, res) => {
             if (err) {
-                error(err);
+                reject(err);
             }
             if (res) {
                 res.on("readable", () => {
@@ -89,7 +89,7 @@ export const waitForOutput = (container: Dockerode.Container, predicate: WaitPre
                     }
                 });
             } else {
-                error(`cannot attach 'readable' event on container's stream`);
+                reject(`cannot attach 'readable' event on container's stream`);
             }
         });
     });
