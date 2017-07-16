@@ -9,15 +9,15 @@ var string_decoder_1 = require("string_decoder");
  * @returns output
  */
 exports.pullImageAsync = function (dockerode, imageName, onProgress) {
-    return new Promise(function (resolve, rej) {
+    return new Promise(function (resolve, reject) {
         dockerode.pull(imageName, function (pullError, stream) {
             if (pullError) {
-                rej(pullError);
+                reject(pullError);
             }
             dockerode.modem.followProgress(stream, function (error, output) {
                 // onFinished
                 if (error) {
-                    rej(error);
+                    reject(error);
                 }
                 resolve(output);
             }, onProgress);
@@ -63,13 +63,13 @@ exports.containerExec = function (container, cmd) {
  */
 exports.waitForOutput = function (container, predicate, timeout) {
     if (timeout === void 0) { timeout = 30000; }
-    return new Promise(function (resolve, error) {
+    return new Promise(function (resolve, reject) {
         var currTimeout = setTimeout(function () {
-            error("waiting for container excited timeout " + timeout + " (default 10s)");
+            reject("waiting for container excited timeout " + timeout + " (default 10s)");
         }, timeout);
         container.attach({ stream: true, stdout: true, stderr: true }, function (err, res) {
             if (err) {
-                error(err);
+                reject(err);
             }
             if (res) {
                 res.on("readable", function () {
@@ -80,7 +80,7 @@ exports.waitForOutput = function (container, predicate, timeout) {
                 });
             }
             else {
-                error("cannot attach 'readable' event on container's stream");
+                reject("cannot attach 'readable' event on container's stream");
             }
         });
     });

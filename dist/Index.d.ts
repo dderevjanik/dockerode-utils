@@ -14,7 +14,7 @@ export declare const pullImageAsync: (dockerode: Dockerode, imageName: string, o
  * @param cmd - command to execute
  * @returns result
  */
-export declare const containerExec: (container: Dockerode.Container, cmd: string[]) => Promise<{}>;
+export declare const containerExec: (container: Dockerode.Container, cmd: string[]) => Promise<string[]>;
 /**
  * Will wait until container produces specific stdout(console) log.
  * @desc If you're creating and then starting a container, sometimes, you need to wait until a service
