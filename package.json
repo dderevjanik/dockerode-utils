@@ -32,7 +32,6 @@
     "type": "git",
     "url": "git+https://github.com/dderevjanik/dockerode-utils.git"
   },
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dderevjanik/dockerode-utils/issues"

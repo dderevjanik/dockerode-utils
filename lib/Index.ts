@@ -14,14 +14,14 @@ type OnProgress = (event: any) => void;
  */
 export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgress?: OnProgress) => {
     return new Promise((resolve, rej) => {
-        dockerode.pull(imageName, (pullError: any, stream: any) => {
+        dockerode.pull(imageName, (pullError: any, stream: Stream) => {
             if (pullError) {
-                throw pullError;
+                rej(pullError);
             }
             dockerode.modem.followProgress(stream, (error: any, output: any) => {
                 // onFinished
                 if (error) {
-                    throw error;
+                    rej(error);
                 }
                 resolve(output);
             }, onProgress);
@@ -94,9 +94,3 @@ export const waitForOutput = (container: Dockerode.Container, predicate: WaitPre
         });
     });
 };
-
-(async () => {
-    const dockerode = new Dockerode();
-    const container = dockerode.getContainer("212f27b48b4b");
-    const result = await containerExec(container, ["wp", "theme", "list"]);
-})();
