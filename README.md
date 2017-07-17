@@ -1,5 +1,7 @@
 # Dockerode Utils
 
+![travis-badge](https://travis-ci.org/dderevjanik/dockerode-utils.svg?branch=master)
+
 ## API
 
 ### `pullImageAsync(dockerode, imageName, onProgress?)`
