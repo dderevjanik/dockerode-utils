@@ -1,7 +1,7 @@
 /// <reference types="dockerode" />
 import * as Dockerode from "dockerode";
 /**
- * Pull docker image asynchronously
+ * Pull docker image and wait for it if you need
  * @param dockerode - dockerode
  * @param imageName - name of image to pull
  * @param onProgress - on progress hook
@@ -9,7 +9,7 @@ import * as Dockerode from "dockerode";
  */
 export declare const pullImageAsync: (dockerode: Dockerode, imageName: string, onProgress?: ((event: any) => void) | undefined) => Promise<{}>;
 /**
- * Execute a command
+ * Execute command inside a container and get output from it, if you need
  * @param container - dockerode.container
  * @param cmd - command to execute
  * @returns result

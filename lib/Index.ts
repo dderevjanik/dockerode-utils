@@ -6,7 +6,7 @@ import { StringDecoder } from "string_decoder";
 type OnProgress = (event: any) => void;
 
 /**
- * Pull docker image asynchronously
+ * Pull docker image and wait for it if you need
  * @param dockerode - dockerode
  * @param imageName - name of image to pull
  * @param onProgress - on progress hook
@@ -30,12 +30,13 @@ export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgre
 };
 
 /**
- * Execute a command
+ * Execute command inside a container and get output from it, if you need
  * @param container - dockerode.container
  * @param cmd - command to execute
  * @returns result
  */
 export const containerExec = (container: Dockerode.Container, cmd: string[]): Promise<string[]> => {
+    // TODO: add detach (don't use stream nor wait for output) options. Useful for daemons
     return new Promise((resolve, error) => {
         container.exec({ Cmd: cmd, AttachStdout: true, AttachStderr: true }, (cErr: any, exec: any) => {
             if (cErr) {
