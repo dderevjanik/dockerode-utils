@@ -68,6 +68,6 @@ const dockerode = new Dockerode();
 const mysqlContainer = await dockerode.run('mysql:5.7.18', [], {}, null);
 
 await waitForOutput(mysqlContainer, (line) => line === 'InnoDB: 5.7.18 started');
-// resuming executing code
+// resume executing code
 
 ```
