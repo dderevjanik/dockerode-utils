@@ -8,8 +8,8 @@
 
 `pullImageAsync(dockerode: Dockerode, imageName: string, onProgress?: (output: string) => void)`
 
-Will pull docker image, you can wait for finish or track a progress. Don't forget
-to add `:tag` to image, otherwise it'll download unnecessary images.
+Will pull docker image, you can wait for finish or track a progress. If you forget to specify
+`:tag`, it'll download `:latest`
 
 ```javascript
 /**

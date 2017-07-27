@@ -14,7 +14,8 @@ type OnProgress = (event: any) => void;
  */
 export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgress?: OnProgress) => {
     return new Promise((resolve, reject) => {
-        dockerode.pull(imageName, (pullError: any, stream: Stream) => {
+        const imageNameWithTag = imageName.includes(":") ? imageName : `${imageName}:latest`;
+        dockerode.pull(imageNameWithTag, (pullError: any, stream: Stream) => {
             if (pullError) {
                 reject(pullError);
             }

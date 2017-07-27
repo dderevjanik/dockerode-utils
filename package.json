@@ -1,6 +1,6 @@
 {
   "name": "dockerode-utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Dockerode utilities",
   "main": "dist/Index.js",
   "author": {
