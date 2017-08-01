@@ -1,6 +1,6 @@
 {
   "name": "dockerode-utils",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Dockerode utilities",
   "main": "dist/Index.js",
   "author": {
@@ -45,7 +45,9 @@
   },
   "homepage": "https://github.com/dderevjanik/dockerode-utils#readme",
   "dependencies": {
-    "@types/node": "^8.0.13"
+    "@types/lodash.flatmap": "^4.5.2",
+    "@types/node": "^8.0.13",
+    "lodash.flatmap": "^4.5.0"
   },
   "devDependencies": {
     "@types/dockerode": "^2.4.3",

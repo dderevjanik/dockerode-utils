@@ -1,5 +1,6 @@
 import { Buffer } from "buffer";
 import * as Dockerode from "dockerode";
+import { flatMap }  from "lodash";
 import { Stream } from "stream";
 import { StringDecoder } from "string_decoder";
 
@@ -95,4 +96,18 @@ export const waitForOutput = (container: Dockerode.Container, predicate: WaitPre
             }
         });
     });
+};
+
+/**
+ * Is docker image exists ?
+ * @param dockerode
+ * @param imageNames - names of images
+ * @return true if image with imageName exists otherwise false
+ */
+export const imageExists = async (dockerode: Dockerode, imageNames: string | string[]) => {
+    const imageNamesArr: string[] = (typeof imageNames === "string")
+        ? [imageNames]
+        : imageNames;
+    const images = await dockerode.listImages({filters: { reference: imageNamesArr }});
+    return (images.length > 0);
 };

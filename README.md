@@ -6,7 +6,9 @@
 
 ### `pullImageAsync(dockerode, imageName, onProgress?)`
 
-`pullImageAsync(dockerode: Dockerode, imageName: string, onProgress?: (output: string) => void)`
+```typescript
+pullImageAsync(dockerode: Dockerode, imageName: string, onProgress?: (output: string) => void)
+```
 
 Will pull docker image, you can wait for finish or track a progress. If you forget to specify
 `:tag`, it'll download `:latest`
@@ -24,7 +26,9 @@ await pullImageAsync(dockerode, 'alpine:latest');
 
 ### `execCommand(container, cmd)`
 
-`execCommand(container: Dockerode.Container, cmd: string[]): string[]`
+```typescript
+execCommand(container: Dockerode.Container, cmd: string[]): string[]
+```
 
 Execute shell command in container and returns output as `string[]`.
 
@@ -49,7 +53,9 @@ console.log(envList2);
 
 ### `waitForOutput(container, predicate, timeout = 15000)`
 
-`waitForOutput(container: Dockerode.Container, predicate: (output: string) => boolean, timeout: number = 15000)`
+```typescript
+waitForOutput(container: Dockerode.Container, predicate: (output: string) => boolean, timeout: number = 15000)
+```
 
 Wait for specific output from container. Useful, when you're working
 with container, in which is running daemon and you have to wait for specific output/line to appears in container.
@@ -71,3 +77,11 @@ await waitForOutput(mysqlContainer, (line) => line === 'InnoDB: 5.7.18 started')
 // resume executing code
 
 ```
+
+### `imageExists(dockerode, ...imageNames)`
+
+```typescript
+imageExists(dockerode: Dockerode, ...imageNames: string | string[]): boolean
+```
+
+Check if images with `imageNames` exist. You can check more than one image at once, like `imageExists(dockerode, ['mongo', 'mysql'])` or only one `imageExists(dockerode, 'mongo)`. In case, you don't define `:tag` it'll check if any image with `imageName` prefix exists.

@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const string_decoder_1 = require("string_decoder");
 /**
@@ -10,7 +18,8 @@ const string_decoder_1 = require("string_decoder");
  */
 exports.pullImageAsync = (dockerode, imageName, onProgress) => {
     return new Promise((resolve, reject) => {
-        dockerode.pull(imageName, (pullError, stream) => {
+        const imageNameWithTag = imageName.includes(":") ? imageName : `${imageName}:latest`;
+        dockerode.pull(imageNameWithTag, (pullError, stream) => {
             if (pullError) {
                 reject(pullError);
             }
@@ -85,4 +94,17 @@ exports.waitForOutput = (container, predicate, timeout = 30000) => {
         });
     });
 };
+/**
+ * Is docker image exists ?
+ * @param dockerode
+ * @param imageNames - names of images
+ * @return true if image with imageName exists otherwise false
+ */
+exports.imageExists = (dockerode, imageNames) => __awaiter(this, void 0, void 0, function* () {
+    const imageNamesArr = (typeof imageNames === "string")
+        ? [imageNames]
+        : imageNames;
+    const images = yield dockerode.listImages({ filters: { reference: imageNamesArr } });
+    return (images.length > 0);
+});
 //# sourceMappingURL=Index.js.map

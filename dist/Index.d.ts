@@ -23,3 +23,10 @@ export declare const containerExec: (container: Dockerode.Container, cmd: string
  * @param timeout - how much time (in ms) to wait until it'll throw a error
  */
 export declare const waitForOutput: (container: Dockerode.Container, predicate: (line: string) => boolean, timeout?: number) => Promise<boolean>;
+/**
+ * Is docker image exists ?
+ * @param dockerode
+ * @param imageNames - names of images
+ * @return true if image with imageName exists otherwise false
+ */
+export declare const imageExists: (dockerode: Dockerode, imageNames: string | string[]) => Promise<boolean>;
