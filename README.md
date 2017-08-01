@@ -2,6 +2,27 @@
 
 ![travis-badge](https://travis-ci.org/dderevjanik/dockerode-utils.svg?branch=master)
 
+## Functions
+
+- [pullImageAsync](#pullimageasyncdockerode-imagename-onprogress) 
+- [execCommand](#execcommandcontainer-cmd)
+- [waitForOutput](#waitforoutputcontainer-predicate-timeout--15000)
+- [imageExists](#imageexistsdockerode-imagenames)
+
+## Installation
+
+npm
+
+```bash
+npm install dockerode-utils
+```
+
+yarn
+
+```bash
+yarn add dockerode-utils
+```
+
 ## API
 
 ### `pullImageAsync(dockerode, imageName, onProgress?)`
