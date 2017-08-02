@@ -2,19 +2,21 @@
 
 ![travis-badge](https://travis-ci.org/dderevjanik/dockerode-utils.svg?branch=master)
 
+Set of useful functions for working with [dockerode](https://github.com/apocas/dockerode).
+
 ## Functions
 
-- [pullImageAsync](#pullimageasyncdockerode-imagename-onprogress) 
-- [execCommand](#execcommandcontainer-cmd)
-- [waitForOutput](#waitforoutputcontainer-predicate-timeout--15000)
-- [imageExists](#imageexistsdockerode-imagenames)
+- [pullImageAsync](#pullimageasyncdockerode-imagename-onprogress) pull docker image and wait to finish download. You can track progress.
+- [execCommand](#execcommandcontainer-cmd) execute shell command inside a running container, returns output.
+- [waitForOutput](#waitforoutputcontainer-predicate-timeout--15000) wait for specific string to appear in running container's `stdout`.
+- [imageExists](#imageexistsdockerode-imagenames) check if image with imageName already exists.
 
 ## Installation
 
 npm
 
 ```bash
-npm install dockerode-utils
+npm install dockerode-utils --save
 ```
 
 yarn
@@ -28,7 +30,7 @@ yarn add dockerode-utils
 ### `pullImageAsync(dockerode, imageName, onProgress?)`
 
 ```typescript
-pullImageAsync(dockerode: Dockerode, imageName: string, onProgress?: (output: string) => void)
+pullImageAsync(dockerode: Dockerode, imageName: string, onProgress?: (output: string) => void): void
 ```
 
 Will pull docker image, you can wait for finish or track a progress. If you forget to specify
@@ -105,4 +107,8 @@ await waitForOutput(mysqlContainer, (line) => line === 'InnoDB: 5.7.18 started')
 imageExists(dockerode: Dockerode, ...imageNames: string | string[]): boolean
 ```
 
-Check if images with `imageNames` exist. You can check more than one image at once, like `imageExists(dockerode, ['mongo', 'mysql'])` or only one `imageExists(dockerode, 'mongo)`. In case, you don't define `:tag` it'll check if any image with `imageName` prefix exists.
+Check if images with `imageNames` exist. You can check more than one image at once, like `imageExists(dockerode, ['mongo', 'mysql'])` or only one `imageExists(dockerode, 'mongo')`. In case, you won't define `:tag` it'll check if any image with `imageName` prefix exists.
+
+## Contribution
+
+Feel free to contribute with useful function that you're using daily and it can be helpful for others. 
