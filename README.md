@@ -4,12 +4,15 @@
 
 Set of useful functions for working with [dockerode](https://github.com/apocas/dockerode).
 
-## Functions
+## TOC
 
-- [pullImageAsync](#pullimageasyncdockerode-imagename-onprogress) pull docker image and wait to finish download. You can track progress.
-- [execCommand](#execcommandcontainer-cmd) execute shell command inside a running container, returns output.
-- [waitForOutput](#waitforoutputcontainer-predicate-timeout--15000) wait for specific string to appear in running container's `stdout`.
-- [imageExists](#imageexistsdockerode-imagenames) check if image with imageName already exists.
+- [Installation](#installation)
+- [API](#api)
+    - [pullImageAsync](#pullimageasyncdockerode-imagename-onprogress) pull docker image and wait to finish download. You can track progress.
+    - [execCommand](#execcommandcontainer-cmd) execute shell command inside a running container, returns output.
+    - [waitForOutput](#waitforoutputcontainer-predicate-timeout--15000) wait for specific string to appear in running container's `stdout`.
+    - [imageExists](#imageexistsdockerode-imagenames) check if image with imageName already exists.
+- [Contribution](#contribution)
 
 ## Installation
 
@@ -97,8 +100,7 @@ const dockerode = new Dockerode();
 const mysqlContainer = await dockerode.run('mysql:5.7.18', [], {}, null);
 
 await waitForOutput(mysqlContainer, (line) => line === 'InnoDB: 5.7.18 started');
-// resume executing code
-
+console.log('MySql db started');
 ```
 
 ### `imageExists(dockerode, ...imageNames)`
@@ -111,4 +113,4 @@ Check if images with `imageNames` exist. You can check more than one image at on
 
 ## Contribution
 
-Feel free to contribute with useful function that you're using daily and it can be helpful for others. 
+Feel free to contribute with useful function that you're using daily and it can be helpful for others.

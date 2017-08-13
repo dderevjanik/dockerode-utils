@@ -1,10 +1,11 @@
 import { Buffer } from "buffer";
 import * as Dockerode from "dockerode";
-import { flatMap } from "lodash";
 import { Stream } from "stream";
 import { StringDecoder } from "string_decoder";
 
 type OnProgress = (event: any) => void;
+type WaitPredicate = (line: string) => boolean;
+type PromisedImage = Promise<Dockerode.Image>;
 
 /**
  * Pull docker image and wait for it if you need
@@ -13,7 +14,7 @@ type OnProgress = (event: any) => void;
  * @param onProgress - on progress hook
  * @returns Dockerode.Image
  */
-export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgress?: OnProgress): Promise<Dockerode.Image> => {
+export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgress?: OnProgress): PromisedImage => {
     return new Promise(async (resolve, reject) => {
         const imageNameWithTag = (imageName.indexOf(":") > 0)
             ? imageName
@@ -24,11 +25,9 @@ export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgre
         }
 
         dockerode.pull(imageNameWithTag, (pullError: any, stream: Stream) => {
-
             if (pullError) {
                 reject(pullError);
             }
-
             if (!stream) {
                 throw new Error(`Image '${imageNameWithTag}' doesn't exists`);
             }
@@ -80,8 +79,6 @@ export const containerExec = (container: Dockerode.Container, cmd: string[]): Pr
     });
 };
 
-type WaitPredicate = (line: string) => boolean;
-
 /**
  * Will wait until container produces specific stdout(console) log.
  * @desc If you're creating and then starting a container, sometimes, you need to wait until a service
@@ -92,7 +89,7 @@ type WaitPredicate = (line: string) => boolean;
 export const waitForOutput = (container: Dockerode.Container, predicate: WaitPredicate, timeout: number = 30000) => {
     return new Promise<boolean>((resolve, reject) => {
         const currTimeout = setTimeout(() => {
-            reject(`waiting for container excited timeout ${timeout} (default 10s)`);
+            reject(`waiting for container excited timeout ${timeout} (default ${timeout / 1000}s)`);
         }, timeout);
         container.attach({ stream: true, stdout: true, stderr: true }, (err, res) => {
             if (err) {
