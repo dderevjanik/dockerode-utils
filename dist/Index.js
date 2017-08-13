@@ -14,24 +14,32 @@ const string_decoder_1 = require("string_decoder");
  * @param dockerode - dockerode
  * @param imageName - name of image to pull
  * @param onProgress - on progress hook
- * @returns output
+ * @returns Dockerode.Image
  */
 exports.pullImageAsync = (dockerode, imageName, onProgress) => {
-    return new Promise((resolve, reject) => {
-        const imageNameWithTag = imageName.includes(":") ? imageName : `${imageName}:latest`;
+    return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+        const imageNameWithTag = (imageName.indexOf(":") > 0)
+            ? imageName
+            : `${imageName}:latest`;
+        if (yield exports.imageExists(dockerode, imageNameWithTag)) {
+            return dockerode.getImage(imageNameWithTag);
+        }
         dockerode.pull(imageNameWithTag, (pullError, stream) => {
             if (pullError) {
                 reject(pullError);
+            }
+            if (!stream) {
+                throw new Error(`Image '${imageNameWithTag}' doesn't exists`);
             }
             dockerode.modem.followProgress(stream, (error, output) => {
                 // onFinished
                 if (error) {
                     reject(error);
                 }
-                resolve(output);
+                resolve(dockerode.getImage(imageNameWithTag));
             }, onProgress);
         });
-    });
+    }));
 };
 /**
  * Execute command inside a container and get output from it, if you need

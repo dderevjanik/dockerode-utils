@@ -5,9 +5,9 @@ import * as Dockerode from "dockerode";
  * @param dockerode - dockerode
  * @param imageName - name of image to pull
  * @param onProgress - on progress hook
- * @returns output
+ * @returns Dockerode.Image
  */
-export declare const pullImageAsync: (dockerode: Dockerode, imageName: string, onProgress?: ((event: any) => void) | undefined) => Promise<{}>;
+export declare const pullImageAsync: (dockerode: Dockerode, imageName: string, onProgress?: ((event: any) => void) | undefined) => Promise<Dockerode.Image>;
 /**
  * Execute command inside a container and get output from it, if you need
  * @param container - dockerode.container

@@ -1,6 +1,6 @@
 import { Buffer } from "buffer";
 import * as Dockerode from "dockerode";
-import { flatMap }  from "lodash";
+import { flatMap } from "lodash";
 import { Stream } from "stream";
 import { StringDecoder } from "string_decoder";
 
@@ -11,21 +11,35 @@ type OnProgress = (event: any) => void;
  * @param dockerode - dockerode
  * @param imageName - name of image to pull
  * @param onProgress - on progress hook
- * @returns output
+ * @returns Dockerode.Image
  */
-export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgress?: OnProgress) => {
-    return new Promise((resolve, reject) => {
-        const imageNameWithTag = imageName.includes(":") ? imageName : `${imageName}:latest`;
+export const pullImageAsync = (dockerode: Dockerode, imageName: string, onProgress?: OnProgress): Promise<Dockerode.Image> => {
+    return new Promise(async (resolve, reject) => {
+        const imageNameWithTag = (imageName.indexOf(":") > 0)
+            ? imageName
+            : `${imageName}:latest`;
+
+        if (await imageExists(dockerode, imageNameWithTag)) {
+            return dockerode.getImage(imageNameWithTag);
+        }
+
         dockerode.pull(imageNameWithTag, (pullError: any, stream: Stream) => {
+
             if (pullError) {
                 reject(pullError);
             }
+
+            if (!stream) {
+                throw new Error(`Image '${imageNameWithTag}' doesn't exists`);
+            }
+
             dockerode.modem.followProgress(stream, (error: any, output: any) => {
                 // onFinished
                 if (error) {
                     reject(error);
                 }
-                resolve(output);
+
+                resolve(dockerode.getImage(imageNameWithTag));
             }, onProgress);
         });
     });
@@ -108,6 +122,6 @@ export const imageExists = async (dockerode: Dockerode, imageNames: string | str
     const imageNamesArr: string[] = (typeof imageNames === "string")
         ? [imageNames]
         : imageNames;
-    const images = await dockerode.listImages({filters: { reference: imageNamesArr }});
+    const images = await dockerode.listImages({ filters: { reference: imageNamesArr } });
     return (images.length > 0);
 };
