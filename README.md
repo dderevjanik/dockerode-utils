@@ -1,5 +1,7 @@
 # Dockerode Utils
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dderevjanik/dockerode-utils.svg)](https://greenkeeper.io/)
+
 ![travis-badge](https://travis-ci.org/dderevjanik/dockerode-utils.svg?branch=master)
 
 Set of useful functions for working with [dockerode](https://github.com/apocas/dockerode).
