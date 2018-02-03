@@ -45,14 +45,14 @@
   },
   "homepage": "https://github.com/dderevjanik/dockerode-utils#readme",
   "dependencies": {
-    "@types/node": "^8.0.13"
+    "@types/node": "^9.4.0"
   },
   "devDependencies": {
     "@types/dockerode": "^2.4.3",
-    "@types/jest": "^20.0.2",
+    "@types/jest": "^22.1.1",
     "dockerode": "^2.5.0",
-    "jest": "^20.0.4",
-    "ts-jest": "^20.0.7",
+    "jest": "^22.1.4",
+    "ts-jest": "^22.0.3",
     "ts-lint": "^4.5.1",
     "typescript": "^2.4.1"
   }
